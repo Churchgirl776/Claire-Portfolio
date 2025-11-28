@@ -9,6 +9,7 @@ import SkillsManager from "./Skills";
 import AwardsManager from "./Awards";
 import ExperienceManager from "./Experience";
 import SocialMediaManager from "./SocialMedia";
+import GalleryManager from "./Gallery";   // ✅ FIXED IMPORT
 import { collection, onSnapshot } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -20,7 +21,6 @@ const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
-  // ✅ Dynamic styles
   const [styles, setStyles] = useState({
     bgColor: theme === "light" ? "#f3f4f6" : "#0a0a0f",
     textColor: theme === "light" ? "#111111" : "#f0f0f0",
@@ -28,16 +28,19 @@ const Dashboard = () => {
     fontFamily: "sans-serif",
   });
 
+  // ✅ FIXED — lowercase gallery key
   const [stats, setStats] = useState({
     projects: 0,
     skills: 0,
     awards: 0,
     experience: 0,
     social: 0,
+    gallery: 0,
   });
+
   const [loading, setLoading] = useState(true);
 
-  // ✅ Protect route
+  // Protect route
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) navigate("/");
@@ -45,7 +48,7 @@ const Dashboard = () => {
     return unsubscribe;
   }, [navigate]);
 
-  // ✅ Apply theme
+  // Apply theme
   useEffect(() => {
     const root = document.documentElement;
     if (theme === "dark") root.classList.add("dark");
@@ -62,7 +65,7 @@ const Dashboard = () => {
   const toggleTheme = () =>
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
-  // ✅ Real-time Firestore stats (auto-updating)
+  // Firestore stats
   useEffect(() => {
     setLoading(true);
     const unsubscribers = [
@@ -80,9 +83,15 @@ const Dashboard = () => {
       ),
       onSnapshot(collection(db, "socialMedia"), (snap) =>
         setStats((prev) => ({ ...prev, social: snap.size }))
+      ),  
+
+      // ✅ FIXED — match your AdminGalleryManager collection
+      onSnapshot(collection(db, "aboutGallery"), (snap) =>
+        setStats((prev) => ({ ...prev, gallery: snap.size }))
       ),
     ];
     setLoading(false);
+
     return () => unsubscribers.forEach((unsub) => unsub && unsub());
   }, []);
 
@@ -95,7 +104,7 @@ const Dashboard = () => {
     }
   }, [navigate]);
 
-  // ✅ Render active section
+  // Render active section
   const renderContent = () => {
     const commonProps = { theme, toggleTheme, styles, setStyles };
     switch (activeSection) {
@@ -109,6 +118,9 @@ const Dashboard = () => {
         return <ExperienceManager {...commonProps} />;
       case "social":
         return <SocialMediaManager {...commonProps} />;
+      case "gallery":
+        return <GalleryManager {...commonProps} />;
+
       default:
         return null;
     }
@@ -158,6 +170,9 @@ const Dashboard = () => {
                     { title: "Awards", key: "awards" },
                     { title: "Experience", key: "experience" },
                     { title: "Socials", key: "social" },
+
+                    // ✅ FIXED: Correct spelling
+                    { title: "Gallery", key: "gallery" },
                   ].map(({ title, key }) => (
                     <motion.div
                       key={key}
@@ -183,6 +198,8 @@ const Dashboard = () => {
                           ? "Achievements"
                           : title === "Experience"
                           ? "Work experience"
+                          : title === "Gallery"
+                          ? "Portfolio images"
                           : "Social media handles"}
                       </p>
                     </motion.div>

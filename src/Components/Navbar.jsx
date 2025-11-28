@@ -60,7 +60,7 @@ const Navbar = () => {
                 duration={500}
                 spy={true}
                 offset={-70}
-                activeClass="text-blue-400 border-b-2 border-blue-400"
+                activeClass="text-green-400 border-b-2 border-green-400"
                 className={`cursor-pointer transition-colors duration-300 ${
                   darkMode
                     ? "text-gray-200 hover:text-green-400"

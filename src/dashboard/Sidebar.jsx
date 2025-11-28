@@ -11,16 +11,19 @@ import {
   FaEllipsisH,
   FaTimes,
   FaMailBulk,
+  FaPhotoVideo,
+  FaSortUp,
+  FaSolarPanel,
 } from "react-icons/fa";
 
 const sections = [
-  { id: "overview", label: "Overview", icon: <FaProjectDiagram /> },
+  { id: "overview", label: "Overview", icon: <FaSolarPanel /> },
   { id: "projects", label: "Projects", icon: <FaProjectDiagram /> },
   { id: "skills", label: "Skills", icon: <FaTools /> },
   { id: "awards", label: "Awards", icon: <FaAward /> },
   { id: "experience", label: "Experience", icon: <FaBriefcase /> },
   { id: "social", label: "Social", icon: <FaShareAlt /> },
-  { id: "responses", label: "Responses", icon: <FaMailBulk /> },
+  { id: "gallery", label: "Gallery", icon: <FaPhotoVideo /> },
 ];
 
 const Sidebar = ({ activeSection, setActiveSection, theme, toggleTheme, handleLogout }) => {
