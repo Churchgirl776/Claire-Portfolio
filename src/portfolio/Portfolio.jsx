@@ -10,7 +10,7 @@ import Contact from "./Contact";
 import { Toaster } from "react-hot-toast";
 import { Element } from "react-scroll";
 import { PortfolioThemeProvider, useTheme } from "../context/ThemeContext"; // provider + hook
-import Feedback from "./Feedback";
+
 
 function PortfolioContent() {
   const { darkMode } = useTheme(); // get current theme
@@ -34,7 +34,6 @@ function PortfolioContent() {
         <Projects theme={darkMode ? "dark" : "light"} />
       </Element>
       <Element name="awards" id="awards"><Awards /></Element>
-      <Element name="feedback" id="feedback"><Feedback /></Element>
       <Element name="contact" id="contact"><Contact /></Element>
     </div>
   );
